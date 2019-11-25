@@ -22,9 +22,9 @@ class wbServer
         $this->instance->start();
     }
 
-    public function onOpen($server, $fd)
+    public function onOpen($server, $request)
     {
-        print_r("客户端: {$fd} 连接到服务器");
+        print_r("客户端: {$request->fd} 连接到服务器");
     }
 
     public function onMessage($server, $frame)
