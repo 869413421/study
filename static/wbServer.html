@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>webServer</title>
+    <script>
+        var url = "ws://127.0.0.1:8811";
+        var wbClient = new WebSocket(url);
+
+        wbClient.onopen = () => {
+            // Web Socket 已连接上，使用 send() 方法发送数据
+            ws.send("向服务端发送数据");
+            console.log('连接成功，向服务端发送数据');
+        }
+
+        wbClient.onmessage = function (evt) {
+            var received_msg = evt.data;
+            console.log('接受到服务端数据:' + received_msg);
+        };
+
+        wbClient.onclose = function () {
+            // 关闭 websocket
+            alert("连接已关闭...");
+        };
+    </script>
+</head>
+<body>
+
+</body>
+</html>
