@@ -1,0 +1,3 @@
+<?php
+
+$wbServer = new self();
