@@ -31,25 +31,39 @@ class wbServer
 
     public function onOpen($server, $request)
     {
-        print_r("客户端: {$request->fd} 连接到服务器");
+        print_r("客户端: {$request->fd} 连接到服务器\n");
+
+        $num = 1;
+        //毫秒级定时器的操作是异步非阻塞的
+        swoole_timer_tick(2000, function ($timer_id) use ($server, $request, $num) {
+            if ($num == 20) {
+                $server->push($request->fd, '定时器tick发送的最后一条数据' . $num);
+                swoole_timer_del($timer_id);
+            }
+            $server->push($request->fd, '定时器tick发送的数据' . $num);
+        });
     }
 
     public function onMessage($server, $frame)
     {
-        print_r("推送任务，开始");
+        print_r("推送任务，开始\n");
 
         $this->instance->task([
             'id' => 1,
             'user_name' => 'xiaohu'
         ]);
 
-        print_r("客户端： {$frame->fd} 向服务器发送了信息\n$frame->data");
-        $server->push($frame->fd, "服务端回复了信息:$frame->data" . date('Y-m-d H:i:s'));
+        swoole_timer_after(5000, function () use ($server, $frame) {
+            $server->push($frame->fd, '定时器after发送的数据');
+        });
+
+        print_r("客户端： {$frame->fd} 向服务器发送了信息\n$frame->data" . "\n");
+        $server->push($frame->fd, "服务端回复了信息:$frame->data" . date('Y-m-d H:i:s') . "\n");
     }
 
     public function onClose($server, $fd)
     {
-        print_r("客户端 $fd 断开了连接");
+        print_r("客户端 $fd 断开了连接\n");
     }
 
     public function onTask($server, $task_id, $work_id, $data)
