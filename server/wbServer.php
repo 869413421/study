@@ -38,7 +38,7 @@ class wbServer
         swoole_timer_tick(2000, function ($timer_id) use ($server, $request, $num) {
             if ($num == 20) {
                 $server->push($request->fd, '定时器tick发送的最后一条数据' . $num);
-                swoole_timer_del($timer_id);
+                swoole_timer_clear($timer_id);
             }
             $server->push($request->fd, '定时器tick发送的数据' . $num);
         });
