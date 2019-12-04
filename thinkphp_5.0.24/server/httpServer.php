@@ -31,7 +31,11 @@ class httpServer
         $this->instance = new Server($this->host, $this->port);
         $this->instance->set($this->setting);
 
-        $this->instance->on('workerstart', 'onWorkerStart');
+        $this->instance->on('workerstart', function (Server $server, $worker_id)
+        {
+            $this->onWorkerStart($server, $worker_id);
+        });
+        
         $this->instance->on('request', [$this, 'onRequest']);
         $this->instance->start();
     }
