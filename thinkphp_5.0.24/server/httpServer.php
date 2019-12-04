@@ -87,3 +87,5 @@ class httpServer
         }
     }
 }
+
+$server = new httpServer();
