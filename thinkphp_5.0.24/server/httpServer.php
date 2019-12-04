@@ -35,7 +35,7 @@ class httpServer
         {
             $this->onWorkerStart($server, $worker_id);
         });
-        
+
         $this->instance->on('request', [$this, 'onRequest']);
         $this->instance->start();
     }
@@ -47,7 +47,7 @@ class httpServer
         require __DIR__ . '../thinkphp/base.php';
     }
 
-    private function onRequest(Request $request, Response $response)
+    public function onRequest(Request $request, Response $response)
     {
         $this->initGlobals($request);
 
