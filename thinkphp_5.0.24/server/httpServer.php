@@ -69,22 +69,38 @@ class httpServer
      */
     private function initGlobals(Request $request)
     {
-        $_SERVER = [];
-        foreach ($request->server as $key => $value)
+        if (isset($request->header))
         {
-            $_SERVER[strtoupper($key)] = $value;
+            foreach ($request->header as $k => $v)
+            {
+                $_SERVER[strtoupper($k)] = $v;
+            }
+        }
+
+        if (isset($request->server))
+        {
+            foreach ($request->server as $k => $v)
+            {
+                $_HEADER[strtoupper($k)] = $v;
+            }
         }
 
         $_GET = [];
-        foreach ($request->get as $key => $value)
+        if (isset($request->get))
         {
-            $_GET[$key] = $value;
+            foreach ($request->get as $k => $v)
+            {
+                $_GET[$k] = $v;
+            }
         }
 
         $_POST = [];
-        foreach ($request->post as $key => $value)
+        if (isset($request->post))
         {
-            $_POST[$key] = $value;
+            foreach ($request->post as $k => $v)
+            {
+                $_POST[$k] = $v;
+            }
         }
     }
 }
