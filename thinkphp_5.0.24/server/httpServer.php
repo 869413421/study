@@ -59,9 +59,6 @@ class httpServer
         }
         $result = ob_get_contents();
         ob_end_clean();
-        var_dump($result);
-        $response->header('content-type','text/html');
-        $response->header('charset','utf-8');
         $response->end($result);
     }
 
