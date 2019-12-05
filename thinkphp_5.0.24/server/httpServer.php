@@ -46,7 +46,7 @@ class httpServer
 
     public function onRequest(Request $request, Response $response)
     {
-        $this->initGlobals($request);
+        $this->initGlobals($request, $response);
 
         ob_start();
         try
@@ -59,7 +59,9 @@ class httpServer
         }
         $result = ob_get_contents();
         ob_end_clean();
-
+        var_dump($result);
+        $response->header('content-type','text/html');
+        $response->header('charset','utf-8');
         $response->end($result);
     }
 
@@ -67,21 +69,29 @@ class httpServer
      * 因为swoole不会释放掉PHP中的常驻内存，所以要初始化掉需要用到的全局变量
      * @param Request $request
      */
-    private function initGlobals(Request $request)
+    private function initGlobals(Request $request, Response $response)
     {
-        if (isset($request->header))
+        if ($request->server['request_uri'] == '/favicon.ico')
         {
-            foreach ($request->header as $k => $v)
+            $response->status(404);
+            $response->end();
+            return;
+        }
+
+        $_SERVER = [];
+        if (isset($request->server))
+        {
+            foreach ($request->server as $k => $v)
             {
                 $_SERVER[strtoupper($k)] = $v;
             }
         }
 
-        if (isset($request->server))
+        if (isset($request->header))
         {
-            foreach ($request->server as $k => $v)
+            foreach ($request->header as $k => $v)
             {
-                $_HEADER[strtoupper($k)] = $v;
+                $_SERVER[strtoupper($k)] = $v;
             }
         }
 
@@ -94,6 +104,15 @@ class httpServer
             }
         }
 
+        $_FILES = [];
+        if (isset($request->files))
+        {
+            foreach ($request->files as $k => $v)
+            {
+                $_FILES[$k] = $v;
+            }
+        }
+
         $_POST = [];
         if (isset($request->post))
         {
@@ -102,6 +121,8 @@ class httpServer
                 $_POST[$k] = $v;
             }
         }
+
+        $_POST['http_server'] = $this->instance;//把对像传过去
     }
 }
 
