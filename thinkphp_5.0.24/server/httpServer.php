@@ -55,7 +55,9 @@ class httpServer
         }
         catch (Exception $exception)
         {
+            var_dump($exception->getMessage());
             $response->end($exception->getMessage());
+            return;
         }
         $result = ob_get_contents();
         ob_end_clean();
