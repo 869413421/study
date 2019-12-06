@@ -19,11 +19,11 @@ class Sms
         $appCode = config('sms.appCode');
         $tplId = config('sms.tplId');
         var_dump($url, $appCode, $tplId);
+
         $client = new Client([
-            "Authorization" => "APPCODE " . $appCode
+            "Authorization:APPCODE " . $appCode
         ]);
 
-        var_dump($url, $appCode);
         try
         {
             $result = $client->post($url, [
