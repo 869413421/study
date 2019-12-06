@@ -16,17 +16,21 @@ class Sms
     public static function SendSms($phone, $params)
     {
         $url = config('sms.host') . config('sms.path');
+        $appCode = config('sms.appCode');
+        $tplId = config('sms.tplId');
+        var_dump($url, $appCode, $tplId);
         $client = new Client([
-            "Authorization" => "APPCODE " . config('sms.appCode')
+            "Authorization" => "APPCODE " . $appCode
         ]);
 
+        var_dump($url, $appCode);
         try
         {
             $result = $client->get($url, [
                 'query' => [
                     'mobile' => $phone,
                     'param' => $params,
-                    'tpl_id' => config('sms.appCode')
+                    'tpl_id' => $tplId
                 ]
             ]);
         }
