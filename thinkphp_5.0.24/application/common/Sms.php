@@ -20,13 +20,14 @@ class Sms
         $tplId = config('sms.tplId');
         var_dump($url, $appCode, $tplId);
 
-        $client = new Client([
-            "Authorization:APPCODE " . $appCode
-        ]);
+        $client = new Client();
 
         try
         {
             $result = $client->post($url, [
+                'headers' => [
+                    'Authorization' => 'APPCODE ' . $appCode
+                ],
                 'query' => [
                     'mobile' => $phone,
                     'param' => $params,
