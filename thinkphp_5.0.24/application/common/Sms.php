@@ -17,7 +17,7 @@ class Sms
     {
         $url = config('sms.host') . config('sms.path');
         $client = new Client([
-            "Authorization:APPCODE " . config('sms.appCode')
+            "Authorization" => "APPCODE " . config('sms.appCode')
         ]);
 
         try

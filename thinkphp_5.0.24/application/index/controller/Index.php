@@ -8,6 +8,7 @@ class Index
 {
     public function index()
     {
-        return Sms::SendSms('13528685024');
+        $code = rand(1000, 9999);
+        return Sms::SendSms('13528685024', 'code:' . $code);
     }
 }
