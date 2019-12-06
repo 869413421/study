@@ -26,7 +26,7 @@ class Sms
         var_dump($url, $appCode);
         try
         {
-            $result = $client->get($url, [
+            $result = $client->post($url, [
                 'query' => [
                     'mobile' => $phone,
                     'param' => $params,
