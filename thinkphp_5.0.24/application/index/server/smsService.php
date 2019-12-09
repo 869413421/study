@@ -19,9 +19,10 @@ class smsService
         $code = rand(1000, 9999);
         $result = Sms::SendSms($phone, 'code:' . $code);
 
-        if ($result['return_code'] !== '00000')
-        {
-            return Util::show(-100, 'sendsms fail');
+        if ($result['return_code'] !== '00000') {
+            return false;
         }
+
+        return $code;
     }
 }
