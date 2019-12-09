@@ -18,12 +18,10 @@ class Sms
         $url = config('sms.host') . config('sms.path');
         $appCode = config('sms.appCode');
         $tplId = config('sms.tplId');
-        var_dump($url, $appCode, $tplId);
 
         $client = new Client();
 
-        try
-        {
+        try {
             $result = $client->post($url, [
                 'headers' => [
                     'Authorization' => 'APPCODE ' . $appCode
@@ -34,9 +32,7 @@ class Sms
                     'tpl_id' => $tplId
                 ]
             ]);
-        }
-        catch (\Exception $exception)
-        {
+        } catch (\Exception $exception) {
             throw new \Exception($exception->getMessage());
         }
 
