@@ -1,8 +1,8 @@
 <?php
 
-namespace app\sms\controller;
+namespace app\index\controller;
 
-use app\sms\server\smsService;
+use app\index\server\smsService;
 
 class Index
 {

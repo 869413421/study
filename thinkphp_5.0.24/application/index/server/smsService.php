@@ -6,10 +6,11 @@
  * Time: 18:01
  */
 
-namespace app\sms\server;
+namespace app\index\server;
 
 
 use app\common\Sms;
+use app\common\Util;
 
 class smsService
 {
@@ -20,9 +21,7 @@ class smsService
 
         if ($result['return_code'] !== '00000')
         {
-            return false;
+            return Util::show(-100, 'sendsms fail');
         }
-
-        return true;
     }
 }
