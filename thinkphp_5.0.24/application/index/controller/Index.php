@@ -6,6 +6,6 @@ class Index
 {
     public function index()
     {
-        return '';
+        echo pathinfo();
     }
 }
