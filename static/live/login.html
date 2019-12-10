@@ -110,6 +110,7 @@
 
             $.get(url, function (data)
             {
+                data = JSON.parse(data);
                 console.log(data);
                 if (data.errorCode != 0)
                 {
@@ -130,6 +131,7 @@
             url = "http://47.94.155.227:8811?s=index/login&" + formData;
             $.get(url, function (data)
             {
+                data = JSON.parse(data);
                 console.log(data);
                 if (data.errorCode != 0)
                 {

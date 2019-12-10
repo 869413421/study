@@ -9,6 +9,8 @@
 namespace app\common;
 
 
+use think\Config;
+
 class Predis
 {
     public $redis = null;
@@ -17,7 +19,8 @@ class Predis
 
     public static function getInstance()
     {
-        if (!self::$instance) {
+        if (!self::$instance)
+        {
             self::$instance = new self();
         }
 
@@ -27,8 +30,9 @@ class Predis
     private function __construct()
     {
         $this->redis = new \Redis();
-        $connect = $this->redis->connect(config('redis.host'), config('redis.port'));
-        if (!$connect) {
+        $connect = $this->redis->connect(Config::get('redis.host'), Config::get('redis.port'));
+        if (!$connect)
+        {
             throw new \Exception('connect error');
         }
     }
@@ -45,15 +49,18 @@ class Predis
 
     public function set($key, $value, $time = 0)
     {
-        if (!$key || !$value) {
+        if (!$key || !$value)
+        {
             throw new \Exception('key or value null');
         }
 
-        if (is_array($value)) {
+        if (is_array($value))
+        {
             $value = json_encode($value, true);
         }
 
-        if (!$time) {
+        if (!$time)
+        {
             return $this->redis->set($key, $value);
         }
 
