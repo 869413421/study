@@ -110,7 +110,7 @@
 
             $.get(url, function (data)
             {
-
+                console.log(data);
                 if (data.errorCode != 0)
                 {
                     alert(data.errorMsg);
@@ -125,13 +125,18 @@
         {
             event.preventDefault();
             var formData = $('form').serialize();
-            console.log(formData);
-            return;
-            // TODO: 请求后台接口跳转界面，前端跳转或者后台跳
-            url = "http://47.94.155.227:8811?s=index/login&phone_num=" + phone_num + "&code=";
-            $.get("https://www.easy-mock.com/mock/5ab1188bddac7967e4398146/example/query?" + formData, function (data)
-            {
 
+            // TODO: 请求后台接口跳转界面，前端跳转或者后台跳
+            url = "http://47.94.155.227:8811?s=index/login&" + formData;
+            $.get(url, function (data)
+            {
+                console.log(data);
+                if (data.errorCode != 0)
+                {
+                    alert(data.errorMsg);
+                }
+
+                alert('登录成功');
             });
         });
 
