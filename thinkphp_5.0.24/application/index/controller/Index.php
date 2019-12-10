@@ -6,6 +6,6 @@ class Index
 {
     public function index()
     {
-        echo json_encode($_GET);
+        return '';
     }
 }

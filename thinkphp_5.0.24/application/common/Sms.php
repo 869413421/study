@@ -10,6 +10,7 @@ namespace app\common;
 
 
 use GuzzleHttp\Client;
+use think\Config;
 
 class Sms
 {
@@ -22,9 +23,10 @@ class Sms
      */
     public static function SendSms($phone, $params)
     {
-        $url = config('sms.host') . config('sms.path');
-        $appCode = config('sms.appCode');
-        $tplId = config('sms.tplId');
+
+        $url = Config::get('sms.host') . Config::get('sms.path');
+        $appCode = Config::get('sms.appCode');
+        $tplId = Config::get('sms.tplId');
 
         $client = new Client();
 
