@@ -13,6 +13,13 @@ use GuzzleHttp\Client;
 
 class Sms
 {
+    /***
+     * 调用接口发送短信
+     * @param $phone 电话号码
+     * @param $params 替换参数
+     * @return mixed 短信接口返回内容
+     * @throws \Exception guzzle异常
+     */
     public static function SendSms($phone, $params)
     {
         $url = config('sms.host') . config('sms.path');
@@ -21,7 +28,8 @@ class Sms
 
         $client = new Client();
 
-        try {
+        try
+        {
             $result = $client->post($url, [
                 'headers' => [
                     'Authorization' => 'APPCODE ' . $appCode
@@ -32,7 +40,9 @@ class Sms
                     'tpl_id' => $tplId
                 ]
             ]);
-        } catch (\Exception $exception) {
+        }
+        catch (\Exception $exception)
+        {
             throw new \Exception($exception->getMessage());
         }
 

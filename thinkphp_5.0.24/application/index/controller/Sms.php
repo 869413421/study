@@ -12,12 +12,19 @@ class Sms
     {
         $phone = $_GET['phone_num'];
 
-        if (!$code = smsService::sendSms($phone)) {
-            return Util::show(200, 'sendsms error');
+        if (!$phone)
+        {
+            return Util::show(-100, 'phonenum null');
         }
 
-        $key = 'phone_' . $phone;
-        Predis::getInstance()->set($key, $code, 300);
+        $data = [
+            'method' => 'sendSms',
+            'data' => [
+                'phone' => $phone
+            ]];
+
+        $_POST['httpServer']->task($data);
+
         return Util::show();
     }
 }

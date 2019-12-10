@@ -32,8 +32,8 @@ class httpServer
         $this->instance->set($this->setting);
 
         $this->instance->on('workerstart', [$this, 'onWorkerStart']);
-
         $this->instance->on('request', [$this, 'onRequest']);
+        $this->instance->on('task', [$this, 'onTask']);
         $this->instance->start();
     }
 
@@ -41,7 +41,7 @@ class httpServer
     {
         define('APP_PATH', __DIR__ . '/../application/');
 
-        require __DIR__ . '/../thinkphp/base.php';
+        require __DIR__ . '/../thinkphp/start.php';
     }
 
     public function onRequest(Request $request, Response $response)
@@ -62,6 +62,13 @@ class httpServer
         $result = ob_get_contents();
         ob_end_clean();
         $response->end($result);
+    }
+
+    public function onTask(Server $server, $taskId, $workerId, $data)
+    {
+        $obj = new \app\common\Task();
+        $method = $data['method'];
+        return $obj->$method($data['data']);
     }
 
     /***
@@ -121,7 +128,7 @@ class httpServer
             }
         }
 
-        $_POST['http_server'] = $this->instance;//把对像传过去
+        $_POST['httpServer'] = $this->instance;//把对像传过去
     }
 }
 
