@@ -501,7 +501,6 @@ class App
      */
     protected static function exec($dispatch, $config)
     {
-        var_dump($dispatch);
         switch ($dispatch['type'])
         {
             case 'redirect': // 重定向跳转
