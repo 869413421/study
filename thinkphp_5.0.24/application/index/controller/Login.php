@@ -15,7 +15,7 @@ class Login
         $phone = $_GET['phone_num'];
         $code = $_GET['code'];
 
-        if ($phone || $code)
+        if (!$phone || !$code)
         {
             return Util::show(-100, 'phonenum or code null');
         }
