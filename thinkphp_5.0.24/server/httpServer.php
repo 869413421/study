@@ -17,7 +17,8 @@ class httpServer
     protected $setting = [
         'document_root' => '/root/study/static/live', // v4.4.0以下版本, 此处必须为绝对路径
         'enable_static_handler' => true,
-        'worker_num' => 5
+        'worker_num' => 5,
+        'task_worker_num' => 4,
     ];
     protected $instance = null;
 
