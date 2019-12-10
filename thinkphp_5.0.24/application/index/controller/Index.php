@@ -6,6 +6,6 @@ class Index
 {
     public function index()
     {
-        echo pathinfo();
+        echo json_encode($_GET);
     }
 }
