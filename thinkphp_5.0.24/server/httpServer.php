@@ -35,6 +35,7 @@ class httpServer
         $this->instance->on('workerstart', [$this, 'onWorkerStart']);
         $this->instance->on('request', [$this, 'onRequest']);
         $this->instance->on('task', [$this, 'onTask']);
+        $this->instance->on('finish', [$this, 'onFinish']);
         $this->instance->start();
     }
 
@@ -70,6 +71,11 @@ class httpServer
         $obj = new \app\common\Task();
         $method = $data['method'];
         return $obj->$method($data['data']);
+    }
+
+    public function onFinish($server, $task_id, $data)
+    {
+        echo "$data\n";
     }
 
     /***
