@@ -6,9 +6,11 @@
  * Time: 17:59
  */
 
+use app\common\Predis;
 use Swoole\Http\Server;
 use Swoole\Http\Request;
 use Swoole\Http\Response;
+use think\Config;
 
 class wsServer
 {
@@ -82,14 +84,15 @@ class wsServer
     {
         print_r("客户端: {$request->fd} 连接到服务器\n");
 
-        $num = 1;
-        //毫秒级定时器的操作是异步非阻塞的
-        swoole_timer_tick(2000, function ($timer_id) use ($server, $request, $num) {
-            if ($num == 20) {
-                swoole_timer_clear($timer_id);
-            }
-            $server->push($request->fd, '定时器tick发送的数据' . $num);
-        });
+//        $num = 1;
+//        //毫秒级定时器的操作是异步非阻塞的
+//        swoole_timer_tick(2000, function ($timer_id) use ($server, $request, $num) {
+//            if ($num == 20) {
+//                swoole_timer_clear($timer_id);
+//            }
+//            $server->push($request->fd, '定时器tick发送的数据' . $num);
+//        });
+        Predis::getInstance()->sAdd(Config::get('live.connect_key'), $request->fd);
     }
 
     public function onMessage($server, $frame)
@@ -111,6 +114,7 @@ class wsServer
 
     public function onClose($server, $fd)
     {
+        Predis::getInstance()->sRem(Config::get('live.connect_key'), $fd);
         print_r("客户端 $fd 断开了连接\n");
     }
 

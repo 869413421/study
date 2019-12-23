@@ -19,8 +19,7 @@ class Predis
 
     public static function getInstance()
     {
-        if (!self::$instance)
-        {
+        if (!self::$instance) {
             self::$instance = new self();
         }
 
@@ -31,8 +30,7 @@ class Predis
     {
         $this->redis = new \Redis();
         $connect = $this->redis->connect(Config::get('redis.host'), Config::get('redis.port'));
-        if (!$connect)
-        {
+        if (!$connect) {
             throw new \Exception('connect error');
         }
     }
@@ -49,21 +47,33 @@ class Predis
 
     public function set($key, $value, $time = 0)
     {
-        if (!$key || !$value)
-        {
+        if (!$key || !$value) {
             throw new \Exception('key or value null');
         }
 
-        if (is_array($value))
-        {
+        if (is_array($value)) {
             $value = json_encode($value, true);
         }
 
-        if (!$time)
-        {
+        if (!$time) {
             return $this->redis->set($key, $value);
         }
 
         return $this->redis->setex($key, $time, $value);
+    }
+
+    public function sAdd($key, $value)
+    {
+        $this->redis->sAdd($key, $value);
+    }
+
+    public function sRem($key, $value)
+    {
+        $this->redis->sRem($key, $value);
+    }
+
+    public function sMembers($key)
+    {
+        return $this->redis->sMembers($key);
     }
 }

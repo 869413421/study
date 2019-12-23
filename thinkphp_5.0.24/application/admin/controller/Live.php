@@ -1,0 +1,19 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: 、、、、、、、、、、、
+ * Date: 2019/12/23
+ * Time: 22:19
+ */
+
+namespace app\admin\controller;
+
+
+class Live
+{
+    public function push()
+    {
+        $data = json_encode($_GET);
+        return $data;
+    }
+}
