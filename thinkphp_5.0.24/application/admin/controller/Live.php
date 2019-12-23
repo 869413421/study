@@ -11,7 +11,7 @@ namespace app\admin\controller;
 
 class Live
 {
-    public function push()
+    public function index()
     {
         $data = json_encode($_GET);
         return $data;
