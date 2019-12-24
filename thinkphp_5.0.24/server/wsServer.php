@@ -7,6 +7,7 @@
  */
 
 use app\common\Predis;
+use Swoole\Coroutine;
 use Swoole\Http\Server;
 use Swoole\Http\Request;
 use Swoole\Http\Response;
@@ -33,7 +34,9 @@ class wsServer
     {
         $this->instance = new Swoole\WebSocket\Server($this->host, $this->port);
         $this->instance->set($this->setting);
+        $this->instance->listen($this->host, 8812, SWOOLE_SOCK_TCP);
 
+        $this->instance->on('start', [$this, 'onStart']);
         $this->instance->on('workerstart', [$this, 'onWorkerStart']);
         $this->instance->on('open', [$this, 'onOpen']);
         $this->instance->on('message', [$this, 'onMessage']);
@@ -42,6 +45,11 @@ class wsServer
         $this->instance->on('task', [$this, 'onTask']);
         $this->instance->on('finish', [$this, 'onFinish']);
         $this->instance->start();
+    }
+
+    public function onStart()
+    {
+        swoole_set_process_name('live_master');
     }
 
     public function onWorkerStart(Server $server, $worker_id)
@@ -124,6 +132,7 @@ class wsServer
      */
     private function initGlobals(Request $request, Response $response)
     {
+        //过滤无用请求
         if ($request->server['request_uri'] == '/favicon.ico') {
             $response->status(404);
             $response->end();
@@ -163,8 +172,25 @@ class wsServer
                 $_POST[$k] = $v;
             }
         }
-
+        $this->writeLog();
         $_POST['httpServer'] = $this->instance;//把对像传过去
+    }
+
+    /***
+     * 记录请求日志
+     */
+    private function writeLog()
+    {
+        $data = array_merge(['data' => date("Ymd H:i:s"), $_GET, $_POST, $_SERVER]);
+
+        $logs = '';
+        foreach ($data as $key => $value) {
+            $logs .= $key . " " . $value . " ";
+        }
+        $logs .= PHP_EOL;
+
+        $fileName = APP_PATH . '../runtime/' . date('Ym') . '/' . date('d') . '_log.txt';
+        Coroutine::writeFile($fileName, $logs, FILE_APPEND);
     }
 }
 
