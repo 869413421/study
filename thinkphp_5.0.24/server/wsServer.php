@@ -183,11 +183,7 @@ class wsServer
     {
         $data = array_merge(['data' => date("Ymd H:i:s"), $_GET, $_POST, $_SERVER]);
 
-        $logs = '';
-        foreach ($data as $key => $value) {
-            $logs .= $key . " " . $value . " ";
-        }
-        $logs .= PHP_EOL;
+        $logs = json_encode($data, JSON_UNESCAPED_UNICODE);
 
         $fileName = APP_PATH . '../runtime/' . date('Ym') . '/' . date('d') . '_log.txt';
         Coroutine::writeFile($fileName, $logs, FILE_APPEND);
