@@ -185,7 +185,13 @@ class wsServer
 
         $logs = json_encode($data, JSON_UNESCAPED_UNICODE);
 
-        $fileName = APP_PATH . '../runtime/' . date('Ym') . '/' . date('d') . '_log.txt';
+        $folder_path = APP_PATH . '../runtime/' . date('Ym');
+        if (is_dir($folder_path)) {
+            mkdir($folder_path, 0777, true);
+        }
+
+        $fileName = $folder_path . '/' . date('d') . '_log.txt';
+
         Coroutine::writeFile($fileName, $logs, FILE_APPEND);
     }
 }
