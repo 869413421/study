@@ -186,7 +186,7 @@ class wsServer
         $logs = json_encode($data, JSON_UNESCAPED_UNICODE);
 
         $folder_path = APP_PATH . '../runtime/' . date('Ym');
-        if (is_dir($folder_path)) {
+        if (!is_dir($folder_path)) {
             mkdir($folder_path, 0777, true);
         }
 
